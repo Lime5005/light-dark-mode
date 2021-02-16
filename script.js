@@ -12,22 +12,12 @@ function imageMode(color) {
     image3.src = `img/undraw_conceptual_idea_${color}.svg`
 }
 
-function darkMode() {
-    nav.style.backgroundColor = 'rgb(0 0 0 / 50%)'
-    textBox.style.backgroundColor = 'rgb(255 255 255 / 50%)'
-        //console.log(toggleIcon.children);
-    toggleIcon.children[0].textContent = 'Dark Mode'
-    toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon')
-    imageMode('dark')
-}
-
-function lightMode() {
-    nav.style.backgroundColor = 'rgb(255 255 255 / 50%)'
-    textBox.style.backgroundColor = 'rgb(0 0 0 / 50%)'
-        //console.log(toggleIcon.children);
-    toggleIcon.children[0].textContent = 'Light Mode'
-    toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun')
-    imageMode('light')
+function toggleLightDarkMode(mode) {
+    nav.style.backgroundColor = mode === 'dark' ? 'rgb(0 0 0 / 50%)' : 'rgb(255 255 255 / 50%)'
+    textBox.style.backgroundColor = mode === 'dark' ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0 / 50%)'
+    toggleIcon.children[0].textContent = mode === 'dark' ? 'Dark Mode' : 'Light Mode'
+    mode === 'dark' ? toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon') : toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun')
+    mode === 'dark' ? imageMode('dark') : imageMode('light')
 }
 
 function switchMode(event) {
@@ -38,13 +28,14 @@ function switchMode(event) {
         //setAttribute('key', 'value')
         document.documentElement.setAttribute('data-theme', 'dark')
         localStorage.setItem('theme', 'dark')
-        darkMode()
+        toggleLightDarkMode('dark')
     } else {
         document.documentElement.setAttribute('data-theme', 'light')
         localStorage.setItem('theme', 'light')
-        lightMode()
+        toggleLightDarkMode('light')
     }
 }
+
 toggleSwitch.addEventListener('change', switchMode)
 
 // Get localStorage status and keep it when refresh the page:
@@ -54,6 +45,6 @@ if (currentTheme) {
     document.documentElement.setAttribute('data-theme', currentTheme)
     if (currentTheme === 'dark') {
         toggleSwitch.checked = true
-        darkMode()
+        toggleLightDarkMode('dark')
     }
 }
